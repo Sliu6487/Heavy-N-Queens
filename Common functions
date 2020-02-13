@@ -71,7 +71,8 @@ def move_cost(weight,dist):
 
 ############Takes a board and moves the queen at current position(row,col) to desired position (row,col)
 def move_queen(board,curr_row,curr_col,des_row,des_col):
-  board[des_row][des_col]=board[curr_row][curr_col]
+  
+  [des_row][des_col]=board[curr_row][curr_col]
   board[curr_row][curr_col] = 0
   return board;
 
@@ -80,3 +81,24 @@ def move_queen(board,curr_row,curr_col,des_row,des_col):
 a =(generate_queenboard(6))
 print_board(a)
 print(find_no_of_attacking_queens(a))
+
+
+#####################################Time Out after 10sec, and take whatever it is.
+import signal
+
+def signal_handler(signum, frame):
+    raise Exception("Oops, it's over 10 seconds.")
+
+########Set a 10-second alarm
+signal.signal(signal.SIGALRM, signal_handler)
+signal.alarm(10) 
+
+try:
+    ######search algorithm that returns the goal
+    a_star_search()  
+except Exception as err:
+    print(err)
+    print("This is the state we get in 10 second:")
+    print_board(board)
+    print("Attacking queens on current board:")
+    find_no_of_attacking_queens(board)
